@@ -1,0 +1,11 @@
+{
+  "name": "lambda_schedule",
+  "version": "1.0.0",
+  "description": "lambda function that works every x minutes to check if the cat was fed",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roi Perelman",
+  "license": "ISC"
+}
