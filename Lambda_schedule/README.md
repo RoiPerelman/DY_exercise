@@ -1,0 +1,2 @@
+- i have kept my mailgun account for you to use in the config.json file
+- please dont send me a million emails :D
