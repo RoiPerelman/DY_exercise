@@ -1,13 +1,8 @@
 const aws = require('aws-sdk');
-var vision = require('./labelDetection');
-var config = require('./config.json');
+var vision = require('./labelDetection.js');
+var food = require('checkfeeding.js');
 
-const s3 = new aws.S3({ apiVersion: '2006-03-01' });
-
-var dst_params = {
-    Bucket: config.bucket,
-    Key: config.dst_key
-};
+const s3 = new aws.S3();
 
 exports.handler = function (event, context, callback) {
 
@@ -41,28 +36,8 @@ exports.handler = function (event, context, callback) {
             return;
         }
         else {
-            // check the image in google vision engine
-            vision.detectLabels(data.Body, function(err, answer) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    if (answer=='true') {
-                        // modify file to update the feeding time
-                        s3.putObject(dst_params, function (err, data) {
-                            if (err) {
-                                callback ("error with file feeding time update " + err);
-                            }
-                            else {
-                                callback(null, "cat was fed " + Math.floor(Date.now() / 60000));
-                            }
-                        });
-                    }
-                    else {
-                        callback(null, "cat was given wrong food - not fed");
-                    }
-                }
-            });
+            // checkfeeding calls vision and if file exists makes a dst_key file in s3
+            food.checkFeeding(data.Body, callback);
         }
     });
 }
