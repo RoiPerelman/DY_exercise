@@ -67,7 +67,15 @@ uses the mailgun-js package.
   - dst_key (needed - **same as the src_key in lambda_schedule config file**)
   - catFoods 
     it hols the three cat foods given to me, change as you like.
-  
+
+### checkfeeding.js - uses labelDetection and updates the chosen dataBase if answer was true
+
+### dataBase.js - generic use to upload a file to s3 bucket. Use this if want to change to another databse
+  chose to use files and not Redis. 
+  Because of the simplicity of the problem - it is more efficient,
+  because checking it would be a lot harder - make ec2 instance and a redis instance with currect IAM permissions to all including the lambda function)
+  because of time limitations.
+
 ### Lambda_bucket.js - the Lambda function that reacts to new files being added to s3 bucket
 
   to use, make an account at aws. use the same bucket as before.
