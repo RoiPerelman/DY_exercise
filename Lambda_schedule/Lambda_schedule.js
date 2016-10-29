@@ -57,7 +57,7 @@ exports.handler = function(event, context, callback) {
                         console.log("error with putting file");
                     }
                     else {
-                        callback(null, "passed key " + data.Key + " the body " + dst_params2.Body);
+                        callback(null, "passed key " + dst_params2.Key + " the body " + dst_params2.Body);
                     }
                 });
             }
