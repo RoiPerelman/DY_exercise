@@ -44,21 +44,23 @@ exports.handler = function(event, context, callback) {
                 email_feeder.sendemail("normal", console.log);
                 callback(null, "cat was fed after email was sent, back to normal");
             }
-            // extra - will put the loop status and time difference into a file every min
-            var dst_params2 = {
-                Bucket: config.bucket,
-                Key: config.dst_key,
-                Body: "loop status: " + loop_status + ", time difference: " + time_difference
-            };
+            // extra - will put the loop status and time difference into a file every min if dst_key configured in config.json
+            if(config.dst_key){
+                var dst_params2 = {
+                    Bucket: config.bucket,
+                    Key: config.dst_key,
+                    Body: "loop status: " + loop_status + ", time difference: " + time_difference
+                };
 
-            s3.putObject(dst_params2, function (err, data) {
-                if (err) {
-                    console.log("error with putting file");
-                }
-                else {
-                    callback(null, "passed key " + data.Key + " the body " + dst_params2.Body);
-                }
-            });
+                s3.putObject(dst_params2, function (err, data) {
+                    if (err) {
+                        console.log("error with putting file");
+                    }
+                    else {
+                        callback(null, "passed key " + data.Key + " the body " + dst_params2.Body);
+                    }
+                });
+            }
         }
     });
 }
