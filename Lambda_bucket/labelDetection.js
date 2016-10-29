@@ -1,37 +1,37 @@
 'use strict';
 
-//var AWS = require('aws-sdk');
-var Vision = require('@google-cloud/vision');
+var config = require('./config.json');
+var gcloud = require('google-cloud');
 // Instantiate a vision client with authentication
-var vision = Vision({
-  projectId: 'inbound-analogy-147604',
-  keyFilename: './071fc324d0288fb3194315d0289e51017eb34142.json'
+var vision = gcloud.vision({
+    projectId: config.projectId,
+    keyFilename: config.keyFile
 });
 
-// get reference to S3 client 
-//var s3 = new AWS.S3();
+const catFoods = config.catFoods;
 
-/**
- * Uses the Vision API to detect labels in the given file.
- */
-function detectLabels (inputFile, callback) {
-  // Make a call to the Vision API to detect the labels
-  vision.detectLabels(inputFile, function (err, labels) {
-    if (err) {
-      return callback("ERROR" + err);
-    }
-    for(var i=0; i<labels.length; i++){
-      if (labels[i] == 'cat'){
-        console.log(labels[i], 'true');
-      }
-      else{
-        console.log(labels[i], 'false');
-      }
-    }
-    callback("done");
-  });
+function detectLabels(inputFile, callback) {
+    var answer = 'false';
+    // Make a call to the Vision API to detect the labels
+    vision.detectLabels(inputFile, function (err, labels) {
+        if (err) {
+            return callback("error detecting labels from google vision engine" + err, null);
+        }
+        for (var i = 0; i < labels.length; i++) {
+            catFoods.forEach (function(catFood) {
+                if (labels[i] == catFood) {
+                    console.log(labels[i], 'true');
+                    answer = 'true';
+                    callback(null, answer);
+                    return;
+                }
+                else {
+                    console.log(labels[i], 'false');
+                }
+            }); 
+        }
+        callback(null, answer);
+    });
 }
-
-detectLabels('cat.jpg', console.log);
 
 exports.detectLabels = detectLabels;

@@ -1,0 +1,7 @@
+{
+    "keyFile": "./071fc324d0288fb3194315d0289e51017eb34142.json",
+    "projectId": "inbound-analogy-147604",
+    "bucket": "catfoodbucket",
+    "dst_key": "TimeSchedule.txt",
+    "catFoods": ["fish", "milk", "bread"]
+}
