@@ -1,6 +1,6 @@
 var config = require("./config.json");
 const aws = require('aws-sdk');
-//var email_feeder = require('./email_feeder.js');
+var email_feeder = require('./email_feeder.js');
 
 const s3 = new aws.S3();
 

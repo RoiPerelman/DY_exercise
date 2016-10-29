@@ -4,9 +4,9 @@
     "from_mail": "perelmanroi@gmail.com",
     "to_mail": "roiperelman@gmail.com",
     "subject_warning": "Cat food Warning",
-    "body_warning": "Warning - Hungry is the cat, it feed you must! (YODA VOICE)!!!",
+    "body_warning": "Warning - Hungry the cat is, feed you must! (YODA VOICE)!!!",
     "subject_normal": "cat feeding is back to normal",
-    "body_normal": "Fed the cat you have. after hungry it was. NO MORE WARNINGS",
+    "body_normal": "Fed the cat you have. after hungry it was. WARNINGS NO MORE",
     "bucket": "catfoodbucket",
     "src_key": "TimeSchedule.txt",
     "dst_key": "schedual.txt"

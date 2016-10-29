@@ -33,14 +33,12 @@ exports.handler = function(event, context, callback) {
     s3.getObject(sleep_params, function(err, data) {
         if (err) {
             loop_status = mode.SLEEP;
-            console.log("make StartFeeding.txt in bucket to Start Feeding");
             callback(null, "make StartFeeding.txt in bucket to Start Feeding");
         }
         else {
             s3.getObject(params, function(err, data) {
                 if (err) {
                     loop_status = mode.SLEEP;
-                    console.log("No food in yet");
                     callback(null, "No food in yet");
                 }
                 else {
@@ -52,18 +50,18 @@ exports.handler = function(event, context, callback) {
                         
                     var end = Math.floor(Date.now() / 60000);
                     var start = Math.floor(Date.parse(data.LastModified) / 60000);
-        
-                    // for debug
                     var time_difference = end - start
+
+                    // for debug
                     console.log(time_difference);
                     
-                    if(((time_difference > 15) || (time_difference < 0)) && (loop_status == mode.EMAIL)){
+                    if((time_difference > 15) && (loop_status == mode.EMAIL)){
                         email_feeder.sendemail("warning", console.log);
                         loop_status = mode.EMAIL_SENT;
                         console.log("email sent and status change to EMAIL.SENT");
                         callback(null, "email sent");
                     }
-                    else if(((time_difference > 30) || (time_difference < 0)) && (loop_status == mode.EMAIL_SENT)){
+                    else if((time_difference > 30) && (loop_status == mode.EMAIL_SENT)){
                         loop_status = mode.SLEEP;
                         s3.deleteObject(sleep_params, function(err, data) {
                         if (err) 
@@ -71,13 +69,11 @@ exports.handler = function(event, context, callback) {
                         else     
                             console.log("deleted StartFeeding.txt");
                         });
-                        console.log("The cat has died!");
                         callback(null, "The cat has died!");
                     }
-                    else if((((end - start) <= 30) || ((end - start) >= 0)) && (loop_status == mode.EMAIL)){
+                    else if(((time_difference) < 15) && (loop_status == mode.EMAIL)){
                         email_feeder.sendemail("normal", console.log);
                         loop_status = mode.EMAIL_SENT;
-                        console.log("cat was fed in time")
                         callback(null, "cat was fed in time")
                     }
                     else{
